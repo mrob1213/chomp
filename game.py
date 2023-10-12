@@ -13,7 +13,7 @@ BLUE = (0, 0, 255)
 BROWN = (224, 161, 52)
 
 screen = pygame.display.set_mode((screen_width, screen_height))
-pygame.display.set_caption('beachside')
+pygame.display.set_caption('beachside0')
 
 #MainLoop
 running = True
@@ -27,4 +27,6 @@ while running:
     pygame.draw.rect(screen, BROWN, (0, screen_height-rectangle_height, screen_width, rectangle_height))
 
     pygame.display.flip()
+
+pygame.quit()
 
