@@ -34,20 +34,41 @@ def draw_background(surf):
         surf.blit(seagrass, (x,screen_height-tile_size*2))
 
     text = custom_font.render('Chomp', True, (255,0,0))
-    surf.blit(text, (screen_width/2-text.get_width()/2,screen_height/2-text.get_height()/2))
+    surf.blit(text, (screen_width/2-text.get_width()/2,screen_height/40))
 
 def draw_fishes(surf):
-    
+    green_fish = pygame.image.load('assets/sprites/green_fish.png').convert()
+    green_fish = pygame.transform.flip(green_fish, True, False)
+    green_fish.set_colorkey((0,0,0))
+    for _ in range(3):
+        x = random.randint(0, screen_width-tile_size)
+        y = random.randint(0, screen_height-tile_size*2)
+        surf.blit(green_fish, (x,y))
+    orange_fish = pygame.image.load('assets/sprites/orange_fish.png').convert()
+    orange_fish.set_colorkey((0, 0, 0))
+    for _ in range(3):
+        x = random.randint(0, screen_width - tile_size)
+        y = random.randint(0, screen_height-tile_size*2)
+        surf.blit(orange_fish, (x, y))
+    puffer_fish = pygame.image.load('assets/sprites/puffer_fish.png').convert()
+    puffer_fish.set_colorkey((0, 0, 0))
+    for _ in range(3):
+        x = random.randint(0, screen_width - tile_size)
+        y = random.randint(0, screen_height-tile_size*2)
+        surf.blit(puffer_fish, (x, y))
 
 running = True
 background = screen.copy()
 draw_background(background)
+draw_fishes(background)
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     screen.blit(background, (0,0))
+
+
 
     pygame.display.flip()
 
