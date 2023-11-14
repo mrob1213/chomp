@@ -9,6 +9,7 @@ class Alien3(pygame.sprite.Sprite):
         #alien1
         self.image = alien3 = pygame.image.load('../g.assets/sprites/alien3.png').convert()
         alien3.set_colorkey((255, 255, 255))
+        self.image = pygame.transform.scale(self.image, (45, 45))
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y

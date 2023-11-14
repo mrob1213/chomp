@@ -26,14 +26,14 @@ background = screen.copy()
 draw_background(background)
 
 for _ in range(1):
-        aliens1.add(Alien1(random.randint(screen_height, screen_height),
-                        random.randint(tile_size, screen_height - 2 * tile_size)))
+        aliens1.add(Alien1(random.randint(5,895),
+                        random.randint(5,970)))
 for _ in range(1):
-        aliens2.add(Alien2(random.randint(screen_height, screen_height),
-                        random.randint(tile_size, screen_height - 2 * tile_size)))
+        aliens2.add(Alien2(random.randint(5,895),
+                        random.randint(5,970)))
 for _ in range(1):
-        aliens3.add(Alien3(random.randint(screen_height, screen_height),
-                        random.randint(tile_size, screen_height - 2 * tile_size)))
+        aliens3.add(Alien3(random.randint(5,895),
+                        random.randint(5,970)))
 
 while running:
     for event in pygame.event.get():
@@ -44,19 +44,19 @@ while running:
     for alien in aliens1:
         if alien.rect.x < -alien.rect.width:
             aliens1.remove(alien)
-            aliens1.add(Alien1(random.randint(screen_height, screen_height + 50), random.randint(tile_size, screen_height - 2 * tile_size)))
+            aliens1.add(Alien1(random.randint(910,910), random.randint(5,790)))
     aliens1.draw(screen)
     aliens2.update()
-    for alien in aliens2:
-        if alien.rect.x < -alien.rect.width:
-            aliens2.remove(alien)
-            aliens2.add(Alien1(random.randint(screen_height, screen_height + 50), random.randint(tile_size, screen_height - 2 * tile_size)))
+    for alien2 in aliens2:
+        if alien2.rect.x < -alien2.rect.width:
+            aliens2.remove(alien2)
+            aliens2.add(Alien1(random.randint(910,910), random.randint(5,790)))
     aliens2.draw(screen)
     aliens3.update()
-    for alien in aliens3:
-        if alien.rect.x < -alien.rect.width:
-            aliens3.remove(alien)
-            aliens3.add(Alien1(random.randint(screen_height, screen_height + 50), random.randint(tile_size, screen_height - 2 * tile_size)))
+    for alien3 in aliens3:
+        if alien3.rect.x < -alien3.rect.width:
+            aliens3.remove(alien3)
+            aliens3.add(Alien1(random.randint(910,910), random.randint(5,790)))
     aliens3.draw(screen)
 
     pygame.display.flip()
