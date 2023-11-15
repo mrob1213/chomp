@@ -1,15 +1,14 @@
 import pygame
 import random
+from game_parameters import *
 
-MIN_SPEED = 0.2
-MAX_SPEED = 0.5
 class Alien3(pygame.sprite.Sprite):
     def __init__(self, x, y):
         super().__init__()
         #alien1
         self.image = alien3 = pygame.image.load('../g.assets/sprites/alien3.png').convert()
         alien3.set_colorkey((255, 255, 255))
-        self.image = pygame.transform.scale(self.image, (45, 45))
+        self.image = pygame.transform.scale(self.image, (55, 55))
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
