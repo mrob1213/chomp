@@ -15,10 +15,10 @@ class Alien2(pygame.sprite.Sprite):
         self.rect.center = (x,y)
 
     def update(self):
-        self.x -= self.speed
-        self.rect.x = self.x
+        self.y += self.speed
+        self.rect.y = self.y
 
     def draw(self, space):
-        space.blit(self.image, self.rect)
+        space.blit(self.image, (self.rect.x, self.rect.y))
 
 aliens2 = pygame.sprite.Group()

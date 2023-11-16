@@ -22,9 +22,6 @@ class Player(pygame.sprite.Sprite):
     def move_right(self):
         self.x_speed = PLAYER_SPEED
 
-    def fire(self):
-        self.x_speed = PLAYER_SPEED
-
     def stop(self):
         self.x_speed = 0
         self.y_speed = 0
