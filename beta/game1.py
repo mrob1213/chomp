@@ -14,13 +14,13 @@ pygame.init()
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('space')
 
-life_icon1 = pygame.image.load('../g.assets/sprites/lives.png').convert()
+life_icon1 = pygame.image.load('../g.assets/sprites/ship.png').convert()
 life_icon1.set_colorkey((255,255,255))
-life_icon1 = pygame.transform.scale(life_icon1, (30, 30))
+life_icon1 = pygame.transform.scale(life_icon1, (35, 35))
 lives1 = NUM_LIVES1
 life_icon2 = pygame.image.load('../g.assets/sprites/ship2.png').convert()
 life_icon2.set_colorkey((255,255,255))
-life_icon2 = pygame.transform.scale(life_icon2, (30, 30))
+life_icon2 = pygame.transform.scale(life_icon2, (35, 35))
 lives2 = NUM_LIVES2
 
 clock = pygame.time.Clock()
@@ -29,11 +29,11 @@ running = True
 background = screen.copy()
 draw_background(background)
 
-for _ in range(1):
+for _ in range(2):
         aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
-for _ in range(1):
+for _ in range(2):
         aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
-for _ in range(1):
+for _ in range(2):
         aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
 
 #location of player1/2
@@ -46,7 +46,7 @@ while running: #and lives1>0 and lives2>0:
         if event.type == pygame.QUIT:
             running = False
         player.stop()
-
+                                                #fix issue with both players moving at same time, causing player1 to be unable to move
         if event.type == pygame.KEYDOWN:
             #player1 movement inputs
             if event.key == pygame.K_LEFT:
@@ -91,24 +91,24 @@ while running: #and lives1>0 and lives2>0:
             lives1 -= len(result)
 
         #Player2 lives
-        result = pygame.sprite.spritecollide(player2, aliens1, True)
-        print(result)
-        if result:
+        result2 = pygame.sprite.spritecollide(player2, aliens1, True)
+        print(result2)
+        if result2:
             # pygame.mixer.Sound.play(hurt)
             aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            lives2 -= len(result)
-        result = pygame.sprite.spritecollide(player2, aliens2, True)
-        print(result)
-        if result:
+            lives2 -= len(result2)
+        result2 = pygame.sprite.spritecollide(player2, aliens2, True)
+        print(result2)
+        if result2:
             # pygame.mixer.Sound.play(hurt)
             aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            lives2 -= len(result)
-        result = pygame.sprite.spritecollide(player2, aliens3, True)
-        print(result)
-        if result:
+            lives2 -= len(result2)
+        result2 = pygame.sprite.spritecollide(player2, aliens3, True)
+        print(result2)
+        if result2:
             # pygame.mixer.Sound.play(hurt)
             aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            lives2 -= len(result)
+            lives2 -= len(result2)
 
 
     screen.blit(background, (0, 0))
@@ -137,9 +137,9 @@ while running: #and lives1>0 and lives2>0:
     aliens3.draw(screen)
 
     for i in range(lives1):
-        screen.blit(life_icon1, (i*300,350))
+        screen.blit(life_icon1, (i*TILE_SIZE+10, SCREEN_HEIGHT-TILE_SIZE+15))
     for i in range(lives2):
-        screen.blit(life_icon2, (i*SCREEN_WIDTH, SCREEN_HEIGHT-TILE_SIZE))
+        screen.blit(life_icon2, (i*TILE_SIZE+425, SCREEN_HEIGHT-TILE_SIZE+15))
 
     player.draw(screen)
     player2.draw(screen)
