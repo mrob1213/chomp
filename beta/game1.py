@@ -1,6 +1,9 @@
 import random
 import pygame
 import sys
+
+from pygame import display
+
 from game_parameters import *
 from background import draw_background
 from beta.alien1 import Alien1, aliens1
@@ -42,7 +45,7 @@ for _ in range(1):
 player = Player(SCREEN_HEIGHT,SCREEN_HEIGHT)
 player2 = Player2(SCREEN_HEIGHT,SCREEN_HEIGHT)
 
-while running and lives1>0 and lives2>0:
+while running: #and lives1>0 and lives2>0:
     for event in pygame.event.get():
         print(event)
         if event.type == pygame.QUIT:
@@ -57,6 +60,8 @@ while running and lives1>0 and lives2>0:
             if event.key == pygame.K_RIGHT:
                 #print(f"right key has been pressed")
                 player.move_right()
+            if event.key == pygame.K_SPACE:
+                player.shoot()
 
         #player2 movement inputs
             if event.key == pygame.K_a:
@@ -65,6 +70,8 @@ while running and lives1>0 and lives2>0:
             if event.key == pygame.K_d:
                 #print(f"D key has been pressed")
                 player2.move_right()
+            if event.key == pygame.K_l:
+                player2.shoot()
 
         if event.type == pygame.KEYUP:
             if event.key == pygame.K_a:
@@ -116,6 +123,8 @@ while running and lives1>0 and lives2>0:
     screen.blit(background, (0, 0))
     player.update()
     player2.update()
+
+
     score_text = score_font.render(f"Score: {score}", True, (255, 255, 255))
     screen.blit(score_text,
                 (385,20))
@@ -148,6 +157,8 @@ while running and lives1>0 and lives2>0:
 
     player.draw(screen)
     player2.draw(screen)
+    player.bullets.draw(screen)
+    player2.bullets2.draw(screen)
     clock.tick(60)
     pygame.display.flip()
 
