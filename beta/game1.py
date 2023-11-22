@@ -11,11 +11,15 @@ from beta.alien2 import Alien2, aliens2
 from beta.alien3 import Alien3, aliens3
 from player import Player
 from player2 import Player2
+from beta.bullet import Bullet, bullet1
+from beta.bullet2 import Bullet2, bullet2
 
 pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('space')
+
+#LIFE ICONS AND SCORE ICON
 
 life_icon1 = pygame.image.load('../g.assets/sprites/ship.png').convert()
 life_icon1.set_colorkey((255,255,255))
@@ -25,10 +29,12 @@ life_icon2 = pygame.image.load('../g.assets/sprites/ship2.png').convert()
 life_icon2.set_colorkey((255,255,255))
 life_icon2 = pygame.transform.scale(life_icon2, (35, 35))
 lives2 = NUM_LIVES2
-score = 0
+score =0
 score_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
 
 clock = pygame.time.Clock()
+
+#ADDING ALIENS
 
 running = True
 background = screen.copy()
@@ -41,11 +47,14 @@ for _ in range(1):
 for _ in range(1):
         aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
 
-#location of player1/2
+#PLAYER LOCATION
+
 player = Player(SCREEN_HEIGHT,SCREEN_HEIGHT)
 player2 = Player2(SCREEN_HEIGHT,SCREEN_HEIGHT)
 
-while running: #and lives1>0 and lives2>0:
+#MAIN LOOP
+
+while running and lives1>0 and lives2>0:
     for event in pygame.event.get():
         print(event)
         if event.type == pygame.QUIT:
@@ -58,9 +67,9 @@ while running: #and lives1>0 and lives2>0:
                 #print(f"left key has been pressed")
                 player.move_left()
             if event.key == pygame.K_RIGHT:
-                #print(f"right key has been pressed")
+                #print(f"right key has been pressed")          #FIX STOP WHEN SHOOTING
                 player.move_right()
-            if event.key == pygame.K_SPACE:
+            if event.key == pygame.K_UP:
                 player.shoot()
 
         #player2 movement inputs
@@ -70,7 +79,7 @@ while running: #and lives1>0 and lives2>0:
             if event.key == pygame.K_d:
                 #print(f"D key has been pressed")
                 player2.move_right()
-            if event.key == pygame.K_l:
+            if event.key == pygame.K_s:
                 player2.shoot()
 
         if event.type == pygame.KEYUP:
@@ -119,13 +128,21 @@ while running: #and lives1>0 and lives2>0:
             aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
             lives2 -= len(result2)
 
+# LASER
+
+
+
+
+
+
+
 
     screen.blit(background, (0, 0))
     player.update()
     player2.update()
 
 
-    score_text = score_font.render(f"Score: {score}", True, (255, 255, 255))
+    score_text = score_font.render(f"Score {score}", True, (255, 255, 255))
     screen.blit(score_text,
                 (385,20))
 
@@ -161,6 +178,20 @@ while running: #and lives1>0 and lives2>0:
     player2.bullets2.draw(screen)
     clock.tick(60)
     pygame.display.flip()
+
+screen.blit(background, (0,0))
+message = score_font.render('GAME OVER', True,(255,0,0))
+screen.blit(message, (SCREEN_WIDTH/2 - message.get_width()/2, SCREEN_HEIGHT/2 - message.get_height()/2))
+score_text = score_font.render(f"Score {score}",True,(255,255,255))
+screen.blit(score_text, (SCREEN_WIDTH/2 - score_text.get_width()/2, SCREEN_HEIGHT/2 - 3*score_text.get_height()/2))
+
+pygame.display.flip()
+
+while True:
+    for event in pygame.event.get():
+        if event.type == pygame.quit:
+            pygame.quit()
+            sys.exit
 
 pygame.quit()
 sys.exit()
