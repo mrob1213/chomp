@@ -7,7 +7,7 @@ class Player(pygame.sprite.Sprite):
         super().__init__()
         self.image = pygame.image.load("../g.assets/sprites/ship.png").convert()
         self.image.set_colorkey((255, 255, 255))
-        self.image = pygame.transform.scale(self.image, (65, 65))
+        self.image = pygame.transform.scale(self.image, (50, 50))
         self.image = self.image
         self.rect = self.image.get_rect()
         self.x = x
@@ -42,3 +42,5 @@ class Player(pygame.sprite.Sprite):
 
     def draw(self, space):
         space.blit(self.image, self.rect)
+
+

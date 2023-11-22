@@ -6,7 +6,7 @@ class Alien1(pygame.sprite.Sprite):
         super().__init__()
         self.image = alien1 = pygame.image.load('../g.assets/sprites/alien1.png').convert()
         alien1.set_colorkey((255, 255, 255))
-        self.image = pygame.transform.scale(self.image, (55, 55))
+        self.image = pygame.transform.scale(self.image, (40,40))
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y

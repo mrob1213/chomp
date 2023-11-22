@@ -22,6 +22,8 @@ life_icon2 = pygame.image.load('../g.assets/sprites/ship2.png').convert()
 life_icon2.set_colorkey((255,255,255))
 life_icon2 = pygame.transform.scale(life_icon2, (35, 35))
 lives2 = NUM_LIVES2
+score = 0
+score_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
 
 clock = pygame.time.Clock()
 
@@ -29,18 +31,18 @@ running = True
 background = screen.copy()
 draw_background(background)
 
-for _ in range(2):
+for _ in range(1):
         aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
-for _ in range(2):
+for _ in range(1):
         aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
-for _ in range(2):
+for _ in range(1):
         aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
 
 #location of player1/2
 player = Player(SCREEN_HEIGHT,SCREEN_HEIGHT)
 player2 = Player2(SCREEN_HEIGHT,SCREEN_HEIGHT)
 
-while running: #and lives1>0 and lives2>0:
+while running and lives1>0 and lives2>0:
     for event in pygame.event.get():
         print(event)
         if event.type == pygame.QUIT:
@@ -50,18 +52,18 @@ while running: #and lives1>0 and lives2>0:
         if event.type == pygame.KEYDOWN:
             #player1 movement inputs
             if event.key == pygame.K_LEFT:
-                print(f"left key has been pressed")
+                #print(f"left key has been pressed")
                 player.move_left()
             if event.key == pygame.K_RIGHT:
-                print(f"right key has been pressed")
+                #print(f"right key has been pressed")
                 player.move_right()
 
         #player2 movement inputs
             if event.key == pygame.K_a:
-                print(f"A key has been pressed")
+                #print(f"A key has been pressed")
                 player2.move_left()
             if event.key == pygame.K_d:
-                print(f"D key has been pressed")
+                #print(f"D key has been pressed")
                 player2.move_right()
 
         if event.type == pygame.KEYUP:
@@ -114,6 +116,9 @@ while running: #and lives1>0 and lives2>0:
     screen.blit(background, (0, 0))
     player.update()
     player2.update()
+    score_text = score_font.render(f"Score: {score}", True, (255, 255, 255))
+    screen.blit(score_text,
+                (385,20))
 
     aliens1.update()
     for alien in aliens1:
@@ -137,9 +142,9 @@ while running: #and lives1>0 and lives2>0:
     aliens3.draw(screen)
 
     for i in range(lives1):
-        screen.blit(life_icon1, (i*TILE_SIZE+10, SCREEN_HEIGHT-TILE_SIZE+15))
+        screen.blit(life_icon1, (i*TILE_SIZE+325, SCREEN_HEIGHT-TILE_SIZE))
     for i in range(lives2):
-        screen.blit(life_icon2, (i*TILE_SIZE+425, SCREEN_HEIGHT-TILE_SIZE+15))
+        screen.blit(life_icon2, (i*TILE_SIZE+10, SCREEN_HEIGHT-TILE_SIZE))
 
     player.draw(screen)
     player2.draw(screen)
