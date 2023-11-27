@@ -1,6 +1,6 @@
 import pygame
 from game_parameters import *
-from bullet import Bullet
+from bullet import Bullet, bullet1
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, x, y):
@@ -50,6 +50,7 @@ class Player(pygame.sprite.Sprite):
         new_bullet.rect.x = self.rect.x + (self.rect.width/2)-14
         new_bullet.rect.y = self.rect.y
         self.bullets.add(new_bullet)
+        #bullet1.add(new_bullet)
 
     def draw(self, space):
         space.blit(self.image, self.rect)

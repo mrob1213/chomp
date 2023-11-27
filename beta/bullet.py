@@ -15,5 +15,8 @@ class Bullet(pygame.sprite.Sprite):
         self.rect.x += self.vel_x
         self.rect.y += self.vel_y
 
+    def draw(self, space):
+        space.blit(self.image, self.rect)
+
 bullet1 = pygame.sprite.Group()
 

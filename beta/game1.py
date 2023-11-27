@@ -23,13 +23,13 @@ pygame.display.set_caption('space')
 
 life_icon1 = pygame.image.load('../g.assets/sprites/ship.png').convert()
 life_icon1.set_colorkey((255,255,255))
-life_icon1 = pygame.transform.scale(life_icon1, (35, 35))
+life_icon1 = pygame.transform.scale(life_icon1, (25, 25))
 lives1 = NUM_LIVES1
 life_icon2 = pygame.image.load('../g.assets/sprites/ship2.png').convert()
 life_icon2.set_colorkey((255,255,255))
-life_icon2 = pygame.transform.scale(life_icon2, (35, 35))
+life_icon2 = pygame.transform.scale(life_icon2, (25, 25))
 lives2 = NUM_LIVES2
-score =0
+score = 0
 score_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
 
 clock = pygame.time.Clock()
@@ -54,7 +54,7 @@ player2 = Player2(SCREEN_HEIGHT,SCREEN_HEIGHT)
 
 #MAIN LOOP
 
-while running and lives1>0 and lives2>0:
+while running: #and lives1>0 and lives2>0:
     for event in pygame.event.get():
         print(event)
         if event.type == pygame.QUIT:
@@ -128,7 +128,27 @@ while running and lives1>0 and lives2>0:
             aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
             lives2 -= len(result2)
 
-# LASER
+
+
+
+
+
+
+
+# LASER    issues with contact
+        resultL1 = pygame.sprite.groupcollide(player.bullets, aliens1, True, True)
+        if resultL1:
+            print('hit')
+            # pygame.mixer.Sound.play(hurt)
+            aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            score += len(result)
+
+
+
+
+
+
+
 
 
 
