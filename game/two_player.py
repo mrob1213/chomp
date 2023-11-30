@@ -6,13 +6,13 @@ from pygame import display
 
 from game_parameters import *
 from background import draw_background
-from beta.alien1 import Alien1, aliens1
-from beta.alien2 import Alien2, aliens2
-from beta.alien3 import Alien3, aliens3
+from game.alien1 import Alien1, aliens1
+from game.alien2 import Alien2, aliens2
+from game.alien3 import Alien3, aliens3
 from player import Player
 from player2 import Player2
-from beta.bullet import Bullet, bullet1
-from beta.bullet2 import Bullet2, bullet2
+from game.bullet import Bullet, bullet1
+from game.bullet2 import Bullet2, bullet2
 
 pygame.init()
 

@@ -6,11 +6,11 @@ from pygame import display
 
 from game_parameters import *
 from background import draw_background
-from beta.alien1 import Alien1, aliens1
-from beta.alien2 import Alien2, aliens2
-from beta.alien3 import Alien3, aliens3
+from game.alien1 import Alien1, aliens1
+from game.alien2 import Alien2, aliens2
+from game.alien3 import Alien3, aliens3
 from player import Player
-from beta.bullet import Bullet, bullet1
+from game.bullet import Bullet, bullet1
 
 pygame.init()
 
@@ -19,12 +19,9 @@ pygame.display.set_caption('space')
 
 # ICONS,SOUNDS
 
-life_icon1 = pygame.image.load('../g.assets/sprites/lives.png').convert()
-life_icon1.set_colorkey((255,255,255))
-life_icon1 = pygame.transform.scale(life_icon1, (25, 25))
 lives1 = NUM_LIVES1
 score = 0
-score_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
+
 hurt = pygame.mixer.Sound('../g.assets/sounds/hurt.wav')
 laser = pygame.mixer.Sound('../g.assets/sounds/laser.wav')
 game_over = pygame.mixer.Sound('../g.assets/sounds/gameover.wav')
@@ -43,9 +40,6 @@ while running:
                 running = False
 
     instruction_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
-
-    x = ['Instructions'
-         'ARROW KEYS - RIGHT AND LEFT']
 
     instructions = instruction_font.render('Instructions', True, (255, 225, 255))
     screen.blit(instructions,
@@ -76,11 +70,11 @@ running = True
 draw_background(background)
 
 for _ in range(1):
-        aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
+        aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
 for _ in range(1):
-        aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
+        aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
 for _ in range(1):
-        aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
+        aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
 
 # PLAYER LOCATION
 
@@ -88,7 +82,7 @@ player = Player(SCREEN_HEIGHT,SCREEN_HEIGHT)
 
 # MAIN LOOP
 
-while running and lives1>0:
+while running: #and lives1>0:
     for event in pygame.event.get():
         #print(event)
         if event.type == pygame.QUIT:
@@ -111,17 +105,17 @@ while running and lives1>0:
         result = pygame.sprite.spritecollide(player, aliens1, True)
         if result:
             pygame.mixer.Sound.play(hurt)
-            aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
             lives1 -= len(result)
         result = pygame.sprite.spritecollide(player, aliens2, True)
         if result:
             pygame.mixer.Sound.play(hurt)
-            aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
             lives1 -= len(result)
         result = pygame.sprite.spritecollide(player, aliens3, True)
         if result:
             pygame.mixer.Sound.play(hurt)
-            aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
             lives1 -= len(result)
 
 # LASER
@@ -131,27 +125,23 @@ while running and lives1>0:
             #print(f"blue alien{resultL1}")
             #print('hit')
             pygame.mixer.Sound.play(alien_hit)
-            aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
             score += 10
         resultL1 = pygame.sprite.groupcollide(player.bullets, aliens2, True, True)
         if resultL1:
             #print('hit')
             pygame.mixer.Sound.play(alien_hit)
-            aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
             score += 10
         resultL1 = pygame.sprite.groupcollide(player.bullets, aliens3, True, True)
         if resultL1:
             #print('hit')
             pygame.mixer.Sound.play(alien_hit)
-            aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
             score += 10
 
     screen.blit(background, (0, 0))
     player.update()
-
-    score_text = score_font.render(f"Score {score}", True, (255, 255, 255))
-    screen.blit(score_text,
-                (360,20))
 
 # RECYCLING ALIENS
 
@@ -159,30 +149,46 @@ while running and lives1>0:
     for alien in aliens1:
         if alien.rect.y > SCREEN_HEIGHT:
             aliens1.remove(alien)
-            aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
+            aliens1.add(Alien1(random.randint(20, SCREEN_WIDTH-20), random.randint(-100,-50)))
     aliens1.draw(screen)
 
     aliens2.update()
     for alien2 in aliens2:
         if alien2.rect.y > SCREEN_HEIGHT:
             aliens2.remove(alien2)
-            aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens2.add(Alien2(random.randint(20, SCREEN_WIDTH-20), random.randint(-100, -50)))
     aliens2.draw(screen)
 
     aliens3.update()
     for alien3 in aliens3:
         if alien3.rect.y > SCREEN_HEIGHT:
             aliens3.remove(alien3)
-            aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens3.add(Alien3(random.randint(20, SCREEN_WIDTH-20), random.randint(-100, -50)))
     aliens3.draw(screen)
 
+# SCORE AND LIVES DISPLAY
+    score_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
+    life_icon1 = pygame.image.load('../g.assets/sprites/ship.png').convert()
+    life_icon1.set_colorkey((255, 255, 255))
+    life_icon1 = pygame.transform.scale(life_icon1, (25, 25))
+
+    score_text = score_font.render(f"Score {score}", True, (255, 255, 255))
+    screen.blit(score_text,
+                (360, 20))
+
     for i in range(lives1):
-        screen.blit(life_icon1, (i*TILE_SIZE+325, SCREEN_HEIGHT-TILE_SIZE))
+        screen.blit(life_icon1, (i*TILE_SIZE+220, SCREEN_HEIGHT-TILE_SIZE/1.5))
+    score_text = score_font.render(f"LIVES", True, (255, 255, 255))
+    screen.blit(score_text,(120, SCREEN_HEIGHT-TILE_SIZE/1.5))
 
     player.draw(screen)
     player.bullets.draw(screen)
     clock.tick(60)
     pygame.display.flip()
+
+
+
+
 
 # GAME OVER SCREEN
 

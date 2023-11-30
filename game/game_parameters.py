@@ -7,10 +7,11 @@ TILE_SIZE = 64
 
 MIN_SPEED = 2.0
 MAX_SPEED = 4.0
+
 PLAYER_SPEED = 5.5
 PLAYER2_SPEED = 5.0
 
 NUM_LIVES1 = 3
 NUM_LIVES2 = 3
 
-pygame.time.delay(3)
+
