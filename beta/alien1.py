@@ -11,13 +11,13 @@ class Alien1(pygame.sprite.Sprite):
         self.x = x
         self.y = y
         self.speed = random.uniform(MIN_SPEED, MAX_SPEED)
-        self.rect.center = (x,y)
+        #self.rect.center = (x,y)
 
     def update(self):
         self.y += self.speed
         self.rect.y = self.y
 
     def draw(self, space):
-        space.blit(self.image, (self.rect.x, self.rect.y))
+        space.blit(self.image, self.rect) #(self.rect.x, self.rect.y))
 
 aliens1 = pygame.sprite.Group()

@@ -31,8 +31,42 @@ life_icon2 = pygame.transform.scale(life_icon2, (25, 25))
 lives2 = NUM_LIVES2
 score = 0
 score_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
+laser = pygame.mixer.Sound('../g.assets/sounds/laser.wav')
 
 clock = pygame.time.Clock()
+
+# INSTRUCTION SCREEN
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                running = False
+
+    instruction_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
+    instructions = instruction_font.render('Instructions', True, (255, 225, 255))
+    screen.blit(instructions,
+                (SCREEN_WIDTH/3,SCREEN_HEIGHT/2))
+    instructions = instruction_font.render('ARROW KEYS - RIGHT AND  LEFT', True, (255, 225, 255))
+    screen.blit(instructions,
+                (SCREEN_WIDTH/5.5,SCREEN_HEIGHT/2+35))
+    instructions = instruction_font.render('SPACEBAR - SHOOT', True, (255, 225, 255))
+    screen.blit(instructions,
+                (SCREEN_WIDTH / 3.25, SCREEN_HEIGHT / 2+70))
+    instructions = instruction_font.render('PRESS ENTER TO START!', True, (255, 225, 255))
+    screen.blit(instructions,
+                (SCREEN_WIDTH / 4, SCREEN_HEIGHT / 2 + 140))
+    instructions = instruction_font.render('GOOD LUCK!', True, (255, 225, 255))
+    screen.blit(instructions,
+                (SCREEN_WIDTH / 2.65, SCREEN_HEIGHT / 2 + 160))
+
+    title = pygame.image.load("../g.assets/sprites/title.png").convert()
+    title.set_colorkey((255, 255, 255))
+    screen.blit(title, (SCREEN_WIDTH / 2 - title.get_width() / 2, SCREEN_HEIGHT/4 - title.get_height() / 2))
+
+    pygame.display.flip()
 
 #ADDING ALIENS
 
@@ -54,12 +88,12 @@ player2 = Player2(SCREEN_HEIGHT,SCREEN_HEIGHT)
 
 #MAIN LOOP
 
-while running: #and lives1>0 and lives2>0:
+while running and lives1>0 and lives2>0:
     for event in pygame.event.get():
         print(event)
         if event.type == pygame.QUIT:
             running = False
-        player.stop()
+        #player.stop()
                                                 #fix issue with both players moving at same time, causing player1 to be unable to move
         if event.type == pygame.KEYDOWN:
             #player1 movement inputs
@@ -71,6 +105,7 @@ while running: #and lives1>0 and lives2>0:
                 player.move_right()
             if event.key == pygame.K_UP:
                 player.shoot()
+                pygame.mixer.Sound.play(laser)
 
         #player2 movement inputs
             if event.key == pygame.K_a:
@@ -81,12 +116,13 @@ while running: #and lives1>0 and lives2>0:
                 player2.move_right()
             if event.key == pygame.K_s:
                 player2.shoot()
+                pygame.mixer.Sound.play(laser)
 
-        if event.type == pygame.KEYUP:
-            if event.key == pygame.K_a:
-                player2.stop()
-            if event.key == pygame.K_d:
-                player2.stop()
+        #if event.type == pygame.KEYUP:
+            #if event.key == pygame.K_a:
+                #player2.stop()
+            #if event.key == pygame.K_d:
+                #player2.stop()
 
         #Player1 lives
         result = pygame.sprite.spritecollide(player, aliens1, True)

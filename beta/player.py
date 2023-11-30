@@ -12,7 +12,7 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.rect.center = (x, y)
+        #self.rect.center = (x, y)
         self.bullets = pygame.sprite.Group()
         self.x_speed = 0
         self.y_speed = 0
@@ -50,7 +50,7 @@ class Player(pygame.sprite.Sprite):
         new_bullet.rect.x = self.rect.x + (self.rect.width/2)-14
         new_bullet.rect.y = self.rect.y
         self.bullets.add(new_bullet)
-        #bullet1.add(new_bullet)
+        print(self.bullets)
 
     def draw(self, space):
         space.blit(self.image, self.rect)

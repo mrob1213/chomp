@@ -3,7 +3,8 @@ import sys
 
 class Bullet(pygame.sprite.Sprite):
     def __init__(self):
-        super(Bullet,self).__init__()
+        #super(Bullet,self).__init__()
+        super().__init__()
         self.image = self.image = pygame.image.load("../g.assets/sprites/laser.png").convert()
         self.image.set_colorkey((0,0,0))
         self.image = pygame.transform.scale(self.image, (30, 30))
