@@ -1,6 +1,9 @@
 import pygame
 import sys
 
+pygame.init()
+
+
 SCREEN_WIDTH = 500
 SCREEN_HEIGHT = 600
 TILE_SIZE = 64

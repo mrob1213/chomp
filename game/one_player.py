@@ -102,43 +102,43 @@ while running: #and lives1>0:
 
 # PLAYER LIVES
 
-        result = pygame.sprite.spritecollide(player, aliens1, True)
-        if result:
-            pygame.mixer.Sound.play(hurt)
-            aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
-            lives1 -= len(result)
-        result = pygame.sprite.spritecollide(player, aliens2, True)
-        if result:
-            pygame.mixer.Sound.play(hurt)
-            aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
-            lives1 -= len(result)
-        result = pygame.sprite.spritecollide(player, aliens3, True)
-        if result:
-            pygame.mixer.Sound.play(hurt)
-            aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
-            lives1 -= len(result)
+    result = pygame.sprite.spritecollide(player, aliens1, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        lives1 -= len(result)
+    result = pygame.sprite.spritecollide(player, aliens2, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        lives1 -= len(result)
+    result = pygame.sprite.spritecollide(player, aliens3, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        lives1 -= len(result)
 
 # LASER
 
-        resultL1 = pygame.sprite.groupcollide(player.bullets, aliens1, True, True)
-        if resultL1:
-            #print(f"blue alien{resultL1}")
-            #print('hit')
-            pygame.mixer.Sound.play(alien_hit)
-            aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
-            score += 10
-        resultL1 = pygame.sprite.groupcollide(player.bullets, aliens2, True, True)
-        if resultL1:
-            #print('hit')
-            pygame.mixer.Sound.play(alien_hit)
-            aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
-            score += 10
-        resultL1 = pygame.sprite.groupcollide(player.bullets, aliens3, True, True)
-        if resultL1:
-            #print('hit')
-            pygame.mixer.Sound.play(alien_hit)
-            aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
-            score += 10
+    resultL1 = pygame.sprite.groupcollide(player.bullets, aliens1, True, True)
+    if resultL1:
+        #print(f"blue alien{resultL1}")
+        #print('hit')
+        pygame.mixer.Sound.play(alien_hit)
+        aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        score += 10
+    resultL1 = pygame.sprite.groupcollide(player.bullets, aliens2, True, True)
+    if resultL1:
+        #print('hit')
+        pygame.mixer.Sound.play(alien_hit)
+        aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        score += 10
+    resultL1 = pygame.sprite.groupcollide(player.bullets, aliens3, True, True)
+    if resultL1:
+        #print('hit')
+        pygame.mixer.Sound.play(alien_hit)
+        aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        score += 10
 
     screen.blit(background, (0, 0))
     player.update()

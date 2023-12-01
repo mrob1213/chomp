@@ -21,5 +21,6 @@ class Alien1(pygame.sprite.Sprite):
     def draw(self, space):
         space.blit(self.image, self.rect) #(self.rect.x, self.rect.y))
 
+
 aliens1 = pygame.sprite.Group()
 
