@@ -14,28 +14,32 @@ from player2 import Player2
 from game.bullet import Bullet, bullet1
 from game.bullet2 import Bullet2, bullet2
 
+import random
+import pygame
+import sys
+
+
 pygame.init()
 
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 pygame.display.set_caption('space')
 
-#LIFE ICONS AND SCORE ICON
+# ICONS,SOUNDS
 
-life_icon1 = pygame.image.load('../g.assets/sprites/ship.png').convert()
-life_icon1.set_colorkey((255,255,255))
-life_icon1 = pygame.transform.scale(life_icon1, (25, 25))
 lives1 = NUM_LIVES1
-life_icon2 = pygame.image.load('../g.assets/sprites/ship2.png').convert()
-life_icon2.set_colorkey((255,255,255))
-life_icon2 = pygame.transform.scale(life_icon2, (25, 25))
 lives2 = NUM_LIVES2
 score = 0
-score_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
-laser = pygame.mixer.Sound('../g.assets/sounds/laser.wav')
+score2 = 0
 
+hurt = pygame.mixer.Sound('../g.assets/sounds/hurt.wav')
+laser = pygame.mixer.Sound('../g.assets/sounds/laser.wav')
+game_over = pygame.mixer.Sound('../g.assets/sounds/gameover.wav')
+alien_hit = pygame.mixer.Sound('../g.assets/sounds/alien.wav')
+explosion = pygame.mixer.Sound('../g.assets/sounds/explosion.wav')
 clock = pygame.time.Clock()
 
 # INSTRUCTION SCREEN
+
 running = True
 while running:
     for event in pygame.event.get():
@@ -46,6 +50,7 @@ while running:
                 running = False
 
     instruction_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
+
     instructions = instruction_font.render('Instructions', True, (255, 225, 255))
     screen.blit(instructions,
                 (SCREEN_WIDTH/3,SCREEN_HEIGHT/2))
@@ -68,116 +73,80 @@ while running:
 
     pygame.display.flip()
 
-#ADDING ALIENS
+# ADDING ALIENS
 
-running = True
 background = screen.copy()
+running = True
 draw_background(background)
 
 for _ in range(1):
-        aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
+        aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
 for _ in range(1):
-        aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
+        aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
 for _ in range(1):
-        aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
+        aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
 
-#PLAYER LOCATION
+# PLAYER LOCATION
 
 player = Player(SCREEN_HEIGHT,SCREEN_HEIGHT)
 player2 = Player2(SCREEN_HEIGHT,SCREEN_HEIGHT)
 
-#MAIN LOOP
+# MAIN LOOP
 
-while running and lives1>0 and lives2>0:
+while running: #and lives1+lives2>0:
     for event in pygame.event.get():
-        print(event)
+        #print(event)
         if event.type == pygame.QUIT:
             running = False
-        #player.stop()
-                                                #fix issue with both players moving at same time, causing player1 to be unable to move
+
+# MOVEMENT INPUTS
+
         if event.type == pygame.KEYDOWN:
-            #player1 movement inputs
             if event.key == pygame.K_LEFT:
-                #print(f"left key has been pressed")
                 player.move_left()
             if event.key == pygame.K_RIGHT:
-                #print(f"right key has been pressed")          #FIX STOP WHEN SHOOTING
                 player.move_right()
             if event.key == pygame.K_UP:
                 player.shoot()
                 pygame.mixer.Sound.play(laser)
 
-        #player2 movement inputs
             if event.key == pygame.K_a:
-                #print(f"A key has been pressed")
                 player2.move_left()
             if event.key == pygame.K_d:
-                #print(f"D key has been pressed")
                 player2.move_right()
-            if event.key == pygame.K_s:
+            if event.key == pygame.K_w:
                 player2.shoot()
                 pygame.mixer.Sound.play(laser)
 
-        #if event.type == pygame.KEYUP:
-            #if event.key == pygame.K_a:
-                #player2.stop()
-            #if event.key == pygame.K_d:
-                #player2.stop()
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                player.stop()
+            if event.key == pygame.K_RIGHT:
+                player.stop()
 
-        #Player1 lives
-        result = pygame.sprite.spritecollide(player, aliens1, True)
-        print(result)
-        if result:
-            #pygame.mixer.Sound.play(hurt)
-            aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            lives1 -= len(result)
-        result = pygame.sprite.spritecollide(player, aliens2, True)
-        print(result)
-        if result:
-            # pygame.mixer.Sound.play(hurt)
-            aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            lives1 -= len(result)
-        result = pygame.sprite.spritecollide(player, aliens3, True)
-        print(result)
-        if result:
-            # pygame.mixer.Sound.play(hurt)
-            aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            lives1 -= len(result)
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_a:
+                player2.stop()
+            if event.key == pygame.K_d:
+                player2.stop()
 
-        #Player2 lives
-        result2 = pygame.sprite.spritecollide(player2, aliens1, True)
-        print(result2)
-        if result2:
-            # pygame.mixer.Sound.play(hurt)
-            aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            lives2 -= len(result2)
-        result2 = pygame.sprite.spritecollide(player2, aliens2, True)
-        print(result2)
-        if result2:
-            # pygame.mixer.Sound.play(hurt)
-            aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            lives2 -= len(result2)
-        result2 = pygame.sprite.spritecollide(player2, aliens3, True)
-        print(result2)
-        if result2:
-            # pygame.mixer.Sound.play(hurt)
-            aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            lives2 -= len(result2)
+    # PLAYER LIVES
 
-
-
-
-
-
-
-
-# LASER    issues with contact
-        resultL1 = pygame.sprite.groupcollide(player.bullets, aliens1, True, True)
-        if resultL1:
-            print('hit')
-            # pygame.mixer.Sound.play(hurt)
-            aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
-            score += len(result)
+    result = pygame.sprite.spritecollide(player, aliens1, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        lives1 -= len(result)
+    result = pygame.sprite.spritecollide(player, aliens2, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        lives1 -= len(result)
+    result = pygame.sprite.spritecollide(player, aliens3, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        lives1 -= len(result)
 
 
 
@@ -187,46 +156,128 @@ while running and lives1>0 and lives2>0:
 
 
 
+# PLAYER2 LIVES
 
+    result = pygame.sprite.spritecollide(player2, aliens1, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        lives2 -= len(result)
+    result = pygame.sprite.spritecollide(player2, aliens2, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        lives2 -= len(result)
+    result = pygame.sprite.spritecollide(player2, aliens3, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        lives2 -= len(result)
 
+# LASER
 
-
-
+    resultL1 = pygame.sprite.groupcollide(player.bullets, aliens1, True, True)
+    if resultL1:
+        #print(f"blue alien{resultL1}")
+        #print('hit')
+        pygame.mixer.Sound.play(alien_hit)
+        aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        score += 10
+    resultL1 = pygame.sprite.groupcollide(player.bullets, aliens2, True, True)
+    if resultL1:
+        #print('hit')
+        pygame.mixer.Sound.play(alien_hit)
+        aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        score += 10
+    resultL1 = pygame.sprite.groupcollide(player.bullets, aliens3, True, True)
+    if resultL1:
+        #print('hit')
+        pygame.mixer.Sound.play(alien_hit)
+        aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
+        score += 10
 
     screen.blit(background, (0, 0))
     player.update()
+
+# LASER2
+
+    resultL2 = pygame.sprite.groupcollide(player2.bullets2, aliens1, True, True)
+    if resultL2:
+        # print(f"blue alien{resultL1}")
+        # print('hit')
+        pygame.mixer.Sound.play(alien_hit)
+        aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH - 30), random.randint(-100, -50)))
+        score2 += 10
+    resultL2 = pygame.sprite.groupcollide(player2.bullets2, aliens2, True, True)
+    if resultL2:
+        # print('hit')
+        pygame.mixer.Sound.play(alien_hit)
+        aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH - 30), random.randint(-100, -50)))
+        score2 += 10
+    resultL2 = pygame.sprite.groupcollide(player2.bullets2, aliens3, True, True)
+    if resultL2:
+        # print('hit')
+        pygame.mixer.Sound.play(alien_hit)
+        aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH - 30), random.randint(-100, -50)))
+        score2 += 10
+
+    screen.blit(background, (0, 0))
     player2.update()
 
 
-    score_text = score_font.render(f"Score {score}", True, (255, 255, 255))
-    screen.blit(score_text,
-                (385,20))
+# RECYCLING ALIENS
 
     aliens1.update()
     for alien in aliens1:
         if alien.rect.y > SCREEN_HEIGHT:
             aliens1.remove(alien)
-            aliens1.add(Alien1(random.randint(0, SCREEN_WIDTH), random.randint(-100,-50)))
+            aliens1.add(Alien1(random.randint(20, SCREEN_WIDTH-20), random.randint(-100,-50)))
     aliens1.draw(screen)
 
     aliens2.update()
     for alien2 in aliens2:
         if alien2.rect.y > SCREEN_HEIGHT:
             aliens2.remove(alien2)
-            aliens2.add(Alien2(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens2.add(Alien2(random.randint(20, SCREEN_WIDTH-20), random.randint(-100, -50)))
     aliens2.draw(screen)
 
     aliens3.update()
     for alien3 in aliens3:
         if alien3.rect.y > SCREEN_HEIGHT:
             aliens3.remove(alien3)
-            aliens3.add(Alien3(random.randint(0, SCREEN_WIDTH), random.randint(-100, -50)))
+            aliens3.add(Alien3(random.randint(20, SCREEN_WIDTH-20), random.randint(-100, -50)))
     aliens3.draw(screen)
 
+
+# SCORE AND LIVES DISPLAY
+    score_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
+    life_icon1 = pygame.image.load('../g.assets/sprites/ship.png').convert()
+    life_icon1.set_colorkey((255, 255, 255))
+    life_icon1 = pygame.transform.scale(life_icon1, (25, 25))
+
+    life_icon2 = pygame.image.load('../g.assets/sprites/ship2.png').convert()
+    life_icon2.set_colorkey((255, 255, 255))
+    life_icon2 = pygame.transform.scale(life_icon2, (25, 25))
+
+    score_text = score_font.render(f"Score {score}", True, (72, 181, 217))
+    screen.blit(score_text,
+                (360, 20))
+
+    score2_text = score_font.render(f"Score {score2}", True, (135, 233, 165))
+    screen.blit(score2_text,
+                (40, 20))
+
     for i in range(lives1):
-        screen.blit(life_icon1, (i*TILE_SIZE+325, SCREEN_HEIGHT-TILE_SIZE))
+        screen.blit(life_icon1, (i*TILE_SIZE+320, SCREEN_HEIGHT-TILE_SIZE/1.5))
+    lives1_text = score_font.render(f"PLAYER 1", True, (255, 255, 255))
+    screen.blit(lives1_text,(350, SCREEN_HEIGHT-TILE_SIZE-5))
+
+
     for i in range(lives2):
-        screen.blit(life_icon2, (i*TILE_SIZE+10, SCREEN_HEIGHT-TILE_SIZE))
+        screen.blit(life_icon2, (i * TILE_SIZE+30, SCREEN_HEIGHT - TILE_SIZE / 1.5))
+    lives2_text = score_font.render(f"PLAYER 2", True, (255, 255, 255))
+    screen.blit(lives2_text, (60, SCREEN_HEIGHT - TILE_SIZE-5))
+
 
     player.draw(screen)
     player2.draw(screen)
@@ -235,8 +286,15 @@ while running and lives1>0 and lives2>0:
     clock.tick(60)
     pygame.display.flip()
 
+
+
+
+
+# GAME OVER SCREEN
+
 screen.blit(background, (0,0))
 message = score_font.render('GAME OVER', True,(255,0,0))
+pygame.mixer.Sound.play(game_over)
 screen.blit(message, (SCREEN_WIDTH/2 - message.get_width()/2, SCREEN_HEIGHT/2 - message.get_height()/2))
 score_text = score_font.render(f"Score {score}",True,(255,255,255))
 screen.blit(score_text, (SCREEN_WIDTH/2 - score_text.get_width()/2, SCREEN_HEIGHT/2 - 3*score_text.get_height()/2))
@@ -251,3 +309,5 @@ while True:
 
 pygame.quit()
 sys.exit()
+
+

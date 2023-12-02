@@ -1,6 +1,6 @@
 import pygame
 from game_parameters import *
-from bullet2 import Bullet2
+from bullet2 import Bullet2, bullet2
 
 
 class Player2(pygame.sprite.Sprite):
@@ -13,7 +13,7 @@ class Player2(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.rect.center = (x, y)
+        #self.rect.center = (x, y)
         self.bullets2 = pygame.sprite.Group()
         self.x_speed = 0
         self.y_speed = 0
@@ -48,9 +48,10 @@ class Player2(pygame.sprite.Sprite):
 
     def shoot(self):
         new_bullet = Bullet2()
-        new_bullet.rect.x = self.rect.x + (self.rect.width/2)-14
+        new_bullet.rect.x = self.rect.x + (self.rect.width / 2) - 14
         new_bullet.rect.y = self.rect.y
         self.bullets2.add(new_bullet)
+        print(self.bullets2)
 
 
 
