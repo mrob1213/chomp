@@ -93,7 +93,7 @@ player2 = Player2(SCREEN_HEIGHT,SCREEN_HEIGHT)
 
 # MAIN LOOP
 
-while running: #and lives1+lives2>0:
+while running: #and lives1>0 and lives2>0:
     for event in pygame.event.get():
         #print(event)
         if event.type == pygame.QUIT:
@@ -278,6 +278,23 @@ while running: #and lives1+lives2>0:
     lives2_text = score_font.render(f"PLAYER 2", True, (255, 255, 255))
     screen.blit(lives2_text, (60, SCREEN_HEIGHT - TILE_SIZE-5))
 
+    # check player lives
+    if lives1 > 0:
+        player.draw(screen)
+        player.bullets.draw(screen)
+    else:
+        player.kill()
+    if lives2 > 0:
+        player2.draw(screen)
+        player2.bullets2.draw(screen)
+    else:
+        player2.kill()
+
+    if lives1 + lives2 == 0:
+        break
+
+    pygame.display.flip()
+
 
     player.draw(screen)
     player2.draw(screen)
@@ -285,6 +302,9 @@ while running: #and lives1+lives2>0:
     player2.bullets2.draw(screen)
     clock.tick(60)
     pygame.display.flip()
+
+
+
 
 
 
