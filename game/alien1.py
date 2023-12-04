@@ -1,5 +1,6 @@
 import pygame
 import random
+from game import player
 from game_parameters import *
 
 class Alien1(pygame.sprite.Sprite):
@@ -11,7 +12,7 @@ class Alien1(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.speed = random.uniform(MIN_SPEED, MAX_SPEED)
+        self.speed = random.uniform(ALIEN1a, ALIEN1b)
         self.rect.center = (x,y)
 
     def update(self):
@@ -20,6 +21,7 @@ class Alien1(pygame.sprite.Sprite):
 
     def draw(self, space):
         space.blit(self.image, self.rect) #(self.rect.x, self.rect.y))
+
 
 
 aliens1 = pygame.sprite.Group()

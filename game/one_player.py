@@ -11,6 +11,8 @@ from game.alien2 import Alien2, aliens2
 from game.alien3 import Alien3, aliens3
 from player import Player
 from game.bullet import Bullet, bullet1
+from game.boss import Boss1, bosses1
+from game.star import Star1, stars1
 
 pygame.init()
 
@@ -26,6 +28,7 @@ hurt = pygame.mixer.Sound('../g.assets/sounds/hurt.wav')
 laser = pygame.mixer.Sound('../g.assets/sounds/laser.wav')
 game_over = pygame.mixer.Sound('../g.assets/sounds/gameover.wav')
 alien_hit = pygame.mixer.Sound('../g.assets/sounds/alien.wav')
+fox = pygame.mixer.Sound('../g.assets/sounds/fox.mp3')
 clock = pygame.time.Clock()
 
 # INSTRUCTION SCREEN
@@ -63,28 +66,71 @@ while running:
 
     pygame.display.flip()
 
-# ADDING ALIENS
+# INSTRUCTION SCREEN2
+
+running = True
+while running:
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_RETURN:
+                running = False
+
+    instruction_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
+
+    instructions = instruction_font.render('BEWARE THE RED MENACE', True, (255, 0, 0))
+    screen.blit(instructions,
+                (SCREEN_WIDTH/3.75,SCREEN_HEIGHT-50))
+
+    pygame.display.flip()
+
+# ADDING ALIENS / INCREASING DIFFICULTY
 
 background = screen.copy()
 running = True
 draw_background(background)
 
+for _ in range(40):
+    stars1.add(Star1(random.randint(30, SCREEN_WIDTH + 30), random.randint(-10, SCREEN_WIDTH)))
+
 for _ in range(1):
-        aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
+    aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
 for _ in range(1):
-        aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
+    aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH+30), random.randint(-14000,-14000)))
 for _ in range(1):
-        aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
+    aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH+30), random.randint(-25000,-25000)))
+
+for _ in range(1):
+    aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
+for _ in range(1):
+    aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH+30), random.randint(-10000,-10000)))
+for _ in range(1):
+    aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH+30), random.randint(-21000,-21000)))
+
+for _ in range(1):
+    aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH+30), random.randint(-100,-50)))
+for _ in range(1):
+    aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH+30), random.randint(-6000,-6000)))
+for _ in range(1):
+    aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH+30), random.randint(-13000,-13000)))
+
+for _ in range(1):
+    bosses1.add(Boss1(random.randint(30, SCREEN_WIDTH + 30), random.randint(-27500, -27500)))
+for _ in range(1):
+    bosses1.add(Boss1(random.randint(30, SCREEN_WIDTH + 30), random.randint(-50000, -50000)))
 
 # PLAYER LOCATION
 
 player = Player(SCREEN_HEIGHT,SCREEN_HEIGHT)
 
+# BACKGROUND MUSIC
+pygame.mixer.Sound.play(fox)
+
 # MAIN LOOP
 
-while running: #and lives1>0:
+while running and lives1>0:
     for event in pygame.event.get():
-        #print(event)
         if event.type == pygame.QUIT:
             running = False
         player.stop()
@@ -117,25 +163,26 @@ while running: #and lives1>0:
         pygame.mixer.Sound.play(hurt)
         aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
         lives1 -= len(result)
+    result = pygame.sprite.spritecollide(player, bosses1, True)
+    if result:
+        pygame.mixer.Sound.play(hurt)
+        bosses1.add(Alien3(random.randint(30, SCREEN_WIDTH - 30), random.randint(-5000, -50)))
+        lives1 -= 3
 
 # LASER
 
     resultL1 = pygame.sprite.groupcollide(player.bullets, aliens1, True, True)
     if resultL1:
-        #print(f"blue alien{resultL1}")
-        #print('hit')
         pygame.mixer.Sound.play(alien_hit)
         aliens1.add(Alien1(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
         score += 10
     resultL1 = pygame.sprite.groupcollide(player.bullets, aliens2, True, True)
     if resultL1:
-        #print('hit')
         pygame.mixer.Sound.play(alien_hit)
         aliens2.add(Alien2(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
         score += 10
     resultL1 = pygame.sprite.groupcollide(player.bullets, aliens3, True, True)
     if resultL1:
-        #print('hit')
         pygame.mixer.Sound.play(alien_hit)
         aliens3.add(Alien3(random.randint(30, SCREEN_WIDTH-30), random.randint(-100, -50)))
         score += 10
@@ -166,7 +213,24 @@ while running: #and lives1>0:
             aliens3.add(Alien3(random.randint(20, SCREEN_WIDTH-20), random.randint(-100, -50)))
     aliens3.draw(screen)
 
+    bosses1.update()
+    for boss1 in bosses1:
+        if boss1.rect.y > SCREEN_HEIGHT:
+            bosses1.remove(boss1)
+            bosses1.add(Boss1(random.randint(20, SCREEN_WIDTH - 20), random.randint(-5000, -50)))
+    bosses1.draw(screen)
+
+# STAR BACKGROUND
+
+    stars1.update()
+    for star1 in stars1:
+        if star1.rect.y > SCREEN_HEIGHT:
+            stars1.remove(star1)
+            stars1.add(Star1(random.randint(20, SCREEN_WIDTH - 20), random.randint(-5000, -50)))
+    stars1.draw(screen)
+
 # SCORE AND LIVES DISPLAY
+
     score_font = pygame.font.Font('../g.assets/fonts/ArcadeClassic.ttf', 25)
     life_icon1 = pygame.image.load('../g.assets/sprites/ship.png').convert()
     life_icon1.set_colorkey((255, 255, 255))
@@ -181,14 +245,18 @@ while running: #and lives1>0:
     score_text = score_font.render(f"LIVES", True, (255, 255, 255))
     screen.blit(score_text,(120, SCREEN_HEIGHT-TILE_SIZE/1.5))
 
-    player.draw(screen)
-    player.bullets.draw(screen)
+    # CHECK PLAYER LIVES
+    if lives1 > 0:
+        player.draw(screen)
+        player.bullets.draw(screen)
+    else:
+        player.kill()
+
+    #if lives1 < 0:
+        #break
+
     clock.tick(60)
     pygame.display.flip()
-
-
-
-
 
 # GAME OVER SCREEN
 

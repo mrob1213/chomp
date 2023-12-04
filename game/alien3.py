@@ -12,7 +12,7 @@ class Alien3(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.x = x
         self.y = y
-        self.speed = random.uniform(MIN_SPEED, MAX_SPEED)
+        self.speed = random.uniform(ALIEN3a, ALIEN3b)
         self.rect.center = (x,y)
 
     def update(self):
