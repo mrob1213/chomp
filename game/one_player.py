@@ -133,7 +133,7 @@ while running and lives1>0:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        player.stop()
+
 
 # MOVEMENT INPUTS
 
@@ -145,6 +145,12 @@ while running and lives1>0:
             if event.key == pygame.K_SPACE:
                 player.shoot()
                 pygame.mixer.Sound.play(laser)
+
+        if event.type == pygame.KEYUP:
+            if event.key == pygame.K_LEFT:
+                player.stop()
+            if event.key == pygame.K_RIGHT:
+                player.stop()
 
 # PLAYER LIVES
 
